@@ -1,4 +1,8 @@
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
+
 import logging
 
 from telegram import BotCommand
@@ -8,6 +12,7 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
+
 
 from handlers.commands import *
 
