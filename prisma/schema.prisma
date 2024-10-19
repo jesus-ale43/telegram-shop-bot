@@ -1,0 +1,62 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:database.db"
+}
+
+generator client {
+  provider             = "prisma-client-py"
+  interface            = "sync"
+  recursive_type_depth = 5
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  user_id    String   @unique
+  name       String
+  phone      String
+  balance    Float    @default(0)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_admin   Boolean  @default(false)
+
+  balanceHistory  BalanceHistory[]
+  purchaseHistory PurchaseHistory[]
+}
+
+model BalanceHistory {
+  id            Int      @id @default(autoincrement())
+  user          User     @relation(fields: [user_id], references: [user_id])
+  user_id       String
+  change_amount Float
+  new_balance   Float
+  reason        String
+  change_date   DateTime @default(now())
+
+  @@index([user_id])
+}
+
+model PurchaseHistory {
+  id            Int      @id @default(autoincrement())
+  user          User     @relation(fields: [user_id], references: [user_id])
+  user_id       String
+  product       Product  @relation(fields: [product_id], references: [id])
+  product_id    Int
+  quantity      Int
+  total_price   Float
+  purchase_date DateTime @default(now())
+
+  @@index([user_id])
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  stock       Int
+  image       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  purchaseHistory PurchaseHistory[]
+}
