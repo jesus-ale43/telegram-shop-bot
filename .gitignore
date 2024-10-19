@@ -161,6 +161,15 @@ cython_debug/
 #.idea/
 
 
-# Custom 
+# -------- Custom --------
+# Database
+/prisma/migrations
+
+database.db
+database.db-journal
+
+# Configuration
+/.vscode
+
+# Other files
 /awrd
-.vscode
